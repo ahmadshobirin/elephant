@@ -33,7 +33,7 @@ class _DetailState extends State<Detail> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: AssetImage('assets/images/profile.jpg'),
+                  image: AssetImage('assets/images/elephant-api-logo.png'),
                   fit: BoxFit.cover,
                 ),
               ),

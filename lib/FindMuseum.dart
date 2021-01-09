@@ -15,23 +15,21 @@ class _FindMuseumState extends State<FindMuseum> {
   List<Datum> _museumList = [];
 
   Future<List<Datum>> get getMuseum async {
-
-    final resp =
-        await http.get("http://jendela.data.kemdikbud.go.id/api/index.php/CcariMuseum/searchGET?nama=museum");
+    final resp = await http.get(
+        "http://jendela.data.kemdikbud.go.id/api/index.php/CcariMuseum/searchGET?nama=museum");
 
     String body = utf8.decode(resp.bodyBytes);
-    print("response body "+body);
+    print("response body " + body);
 
     if (resp.statusCode != 200) {
       throw ("gagal Terhubung dengan server (Code: ${resp.statusCode}");
     }
 
-    final Museum res = jsonDecode(body);
-
+    final Map<String, dynamic> res = jsonDecode(body);
 
     if (resp.statusCode == 200) {
-      res.data.forEach((Datum data) {
-        _museumList.add(data);
+      res['data'].forEach((dynamic data) {
+        _museumList.add(Datum.fromJson(data));
       });
       return _museumList;
     }
@@ -113,7 +111,7 @@ class _FindMuseumState extends State<FindMuseum> {
               // ),
               Expanded(
                 child: FutureBuilder<List<Datum>>(
-                 // initialData: _museumList,
+                  // initialData: _museumList,
                   future: getMuseum,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -139,8 +137,9 @@ class _FindMuseumState extends State<FindMuseum> {
                                       1.5,
                                       makeItem(
                                         title: _modelMuseum.nama,
-                                        genre: _modelMuseum.kecamatan +
-                                            " - " + _modelMuseum.kabupatenKota + " - " + _modelMuseum.propinsi,
+                                        genre: _modelMuseum.kabupatenKota +
+                                            " - " +
+                                            _modelMuseum.propinsi,
                                       ),
                                     ),
                                     SizedBox(
@@ -182,7 +181,9 @@ class _FindMuseumState extends State<FindMuseum> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                    image: NetworkImage("https://images.unsplash.com/photo-1532702229413-a9ec46471ca0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"), fit: BoxFit.cover)),
+                    image: NetworkImage(
+                        "https://images.unsplash.com/photo-1532702229413-a9ec46471ca0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"),
+                    fit: BoxFit.cover)),
             child: Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -205,20 +206,22 @@ class _FindMuseumState extends State<FindMuseum> {
                   SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.airplay_rounded,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        genre,
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
+                  Expanded(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.airplay_rounded,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          genre,
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
