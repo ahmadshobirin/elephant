@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Model/Elephant.dart';
+import 'Model/Museum.dart';
 
 class Detail extends StatefulWidget {
   Detail({Key key, this.dataDetail}) : super(key: key);
-  final Elephant dataDetail;
+  final Datum dataDetail;
   @override
   _DetailState createState() => _DetailState();
 }
@@ -11,7 +11,7 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
-    Elephant _elephant = widget.dataDetail;
+    Datum _museum = widget.dataDetail;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -59,35 +59,29 @@ class _DetailState extends State<Detail> {
             child: Column(
               children: [
                 Image(
-                  image: NetworkImage(_elephant.image),
+                  image: NetworkImage("https://images.unsplash.com/photo-1532702229413-a9ec46471ca0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80 "),
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 Text(
-                  _elephant.name.toString().toUpperCase(),
+                  _museum.nama.toString().toUpperCase(),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "Lahir: ${_elephant.dob.toString()}",
+                  "Lokasi: ${_museum.kecamatan.toString()} ${_museum.kabupatenKota.toString()} ${_museum.propinsi.toString()}",
                   style: TextStyle(
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  "Mati: ${_elephant.dod.toString()}",
+                  "Tanggal Berdiri:",
                   style: TextStyle(
                     fontSize: 14,
                   ),
                 ),
                 Text(
-                  "Catatan:",
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  _elephant.note,
+                  _museum.tahunBerdiri,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,

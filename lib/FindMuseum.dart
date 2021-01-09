@@ -1,33 +1,39 @@
 import 'package:ujianptm/FadeAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ujianptm/Model/Elephant.dart';
 import 'dart:convert';
 
 import 'Detail.dart';
-import 'Model/Elephant.dart';
+import 'Model/Museum.dart';
 
-class FindGame extends StatefulWidget {
+class FindMuseum extends StatefulWidget {
   @override
-  _FindGameState createState() => _FindGameState();
+  _FindMuseumState createState() => _FindMuseumState();
 }
 
-class _FindGameState extends State<FindGame> {
-  List<Elephant> _elephantList = [];
+class _FindMuseumState extends State<FindMuseum> {
+  List<Datum> _museumList = [];
 
-  Future<List<Elephant>> get getElephant async {
+  Future<List<Datum>> get getMuseum async {
+
     final resp =
-        await http.get("https://elephant-api.herokuapp.com/elephants/sex/male");
+        await http.get("http://jendela.data.kemdikbud.go.id/api/index.php/CcariMuseum/searchGET?nama=museum");
+
+    String body = utf8.decode(resp.bodyBytes);
+    print("response body "+body);
+
     if (resp.statusCode != 200) {
       throw ("gagal Terhubung dengan server (Code: ${resp.statusCode}");
     }
-    final dynamic res = jsonDecode(resp.body);
+
+    final Museum res = jsonDecode(body);
+
 
     if (resp.statusCode == 200) {
-      res.forEach((dynamic data) {
-        _elephantList.add(Elephant.fromJson(jsonEncode(data)));
+      res.data.forEach((Datum data) {
+        _museumList.add(data);
       });
-      return _elephantList;
+      return _museumList;
     }
   }
 
@@ -106,9 +112,9 @@ class _FindGameState extends State<FindGame> {
               //   height: 30,
               // ),
               Expanded(
-                child: FutureBuilder<List<Elephant>>(
-                  initialData: _elephantList,
-                  future: getElephant,
+                child: FutureBuilder<List<Datum>>(
+                 // initialData: _museumList,
+                  future: getMuseum,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.hasData &&
@@ -117,14 +123,14 @@ class _FindGameState extends State<FindGame> {
                         return ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
-                            Elephant _modelElephant = snapshot.data[index];
+                            Datum _modelMuseum = snapshot.data[index];
                             return Container(
                               child: GestureDetector(
                                 onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => Detail(
-                                        dataDetail: _modelElephant,
+                                        dataDetail: _modelMuseum,
                                       ),
                                     )),
                                 child: Column(
@@ -132,11 +138,9 @@ class _FindGameState extends State<FindGame> {
                                     FadeAnimation(
                                       1.5,
                                       makeItem(
-                                        image: _modelElephant.image,
-                                        title: _modelElephant.name,
-                                        genre: _modelElephant.sex +
-                                            " - " +
-                                            _modelElephant.species,
+                                        title: _modelMuseum.nama,
+                                        genre: _modelMuseum.kecamatan +
+                                            " - " + _modelMuseum.kabupatenKota + " - " + _modelMuseum.propinsi,
                                       ),
                                     ),
                                     SizedBox(
@@ -169,7 +173,7 @@ class _FindGameState extends State<FindGame> {
     );
   }
 
-  Widget makeItem({image, title, genre}) {
+  Widget makeItem({title, genre}) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -178,7 +182,7 @@ class _FindGameState extends State<FindGame> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
-                    image: NetworkImage(image), fit: BoxFit.cover)),
+                    image: NetworkImage("https://images.unsplash.com/photo-1532702229413-a9ec46471ca0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"), fit: BoxFit.cover)),
             child: Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(

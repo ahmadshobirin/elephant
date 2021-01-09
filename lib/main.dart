@@ -2,7 +2,7 @@ import 'package:ujianptm/FadeAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
-import 'FindElephant.dart';
+import 'FindMuseum.dart';
 
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage>
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           Navigator.pushReplacement(context,
-              PageTransition(child: FindGame(), type: PageTransitionType.fade));
+              PageTransition(child: FindMuseum(), type: PageTransitionType.fade));
         }
       });
   }
